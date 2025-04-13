@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center">Create an Account</h1>
+
+        {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+            {# Email field #}
+            <div class="mb-3">
+                {{ form_label(registrationForm.email, 'Email Address') }}
+                {{ form_widget(registrationForm.email, {
+                    'attr': {
+                        'class': 'form-control' ~ (not registrationForm.email.vars.valid ? ' is-invalid' : ''),
+                        'autocomplete': 'email'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            {# Password field #}
+            <div class="mb-3">
+                {{ form_label(registrationForm.plainPassword, 'Password') }}
+                {{ form_widget(registrationForm.plainPassword, {
+                    'attr': {
+                        'class': 'form-control' ~ (not registrationForm.plainPassword.vars.valid ? ' is-invalid' : ''),
+                        'autocomplete': 'new-password'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+
+            {# First Name field (if exists) #}
+            {% if registrationForm.firstName is defined %}
+                <div class="mb-3">
+                    {{ form_label(registrationForm.firstName, 'First Name') }}
+                    {{ form_widget(registrationForm.firstName, {
+                        'attr': {
+                            'class': 'form-control' ~ (not registrationForm.firstName.vars.valid ? ' is-invalid' : ''),
+                            'autocomplete': 'given-name'
+                        }
+                    }) }}
+                    {{ form_errors(registrationForm.firstName) }}
+                </div>
+            {% endif %}
+
+            {# Last Name field (if exists) #}
+            {% if registrationForm.lastNAME is defined %}
+                <div class="mb-3">
+                    {{ form_label(registrationForm.lastNAME, 'Last Name') }}
+                    {{ form_widget(registrationForm.lastNAME, {
+                        'attr': {
+                            'class': 'form-control' ~ (not registrationForm.lastNAME.vars.valid ? ' is-invalid' : ''),
+                            'autocomplete': 'family-name'
+                        }
+                    }) }}
+                    {{ form_errors(registrationForm.lastNAME) }}
+                </div>
+            {% endif %}
+
+            {# Agree to terms #}
+            <div class="form-check mb-3">
+                {{ form_widget(registrationForm.agreeTerms, {
+                    'attr': {
+                        'class': 'form-check-input' ~ (not registrationForm.agreeTerms.vars.valid ? ' is-invalid' : '')
+                    }
+                }) }}
+                {{ form_label(registrationForm.agreeTerms, 'I agree to the terms and conditions', {
+                    'label_attr': {'class': 'form-check-label'}
+                }) }}
+                {{ form_errors(registrationForm.agreeTerms) }}
+            </div>
+
+            {# Submit button #}
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}

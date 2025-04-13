@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container">
+  <div class="form">
+  <h1>ajouter une categhory</h1><br>
+    {{ form_start(form) }}
+    {{ form_row(form.name,{'attr':{'class ':'form form-control'}})}}
+    <br>
+    <input type="submit" value="sauvgarder" class="btn btn-primary">
+
+    {{ form_end(form) }}
+  </div>
+</div>
+ {% endblock %}
