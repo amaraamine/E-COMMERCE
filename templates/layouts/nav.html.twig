@@ -18,10 +18,13 @@
             administation
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ path('app_category') }}">categorie</a></li>
-            <li><a class="dropdown-item" href="{{ path('app_category_new') }}">ajouter une categories </a></li>
-            <li><hr class="dropdown-divider"></li>
-           <li class="dropdown-item" href="{{ path('app_user') }}">Utilisateurs</li>
+              <li><a class="dropdown-item" href="{{ path('app_category') }}">categorie</a></li>
+               <li><a class="dropdown-item" href="{{ path('app_category_new') }}">ajouter une categorie </a></li>
+               <li><a class="dropdown-item" href="{{ path('app_sub_category_index') }}">Sous Categorie</a></li>
+               <li><a class="dropdown-item" href="{{ path('app_sub_category_new') }}">Creer une Sous Categorie</a></li>
+               <li><hr class="dropdown-divider"></li>
+               <li><a class="dropdown-item"href="{{path('app_product_index')}}>Produits <a </li>
+               <li class="dropdown-item" href="{{ path('app_user') }}">Utilisateurs</li>
           </ul>
         </li>
         {% endif %}
