@@ -73,6 +73,9 @@
                 {{ form_errors(registrationForm.agreeTerms) }}
             </div>
 
+            {# CSRF token and hidden fields #}
+            {{ form_rest(registrationForm) }}
+
             {# Submit button #}
             <button type="submit" class="btn btn-primary w-100">Register</button>
 

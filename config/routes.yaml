@@ -1,3 +1,58 @@
-controllers:
-    resource: ../src/Controller/
-    type: attribute
+# config/routes.yaml
+
+# Routes pour HomeController
+app_home:
+    path: /
+    controller: App\Controller\HomeController::index
+
+# Routes pour RegistrationController
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+
+app_verify_email:
+    path: /verify/email
+    controller: App\Controller\RegistrationController::verifyUserEmail
+
+# Routes pour SecurityController
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+app_logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout
+
+# Routes pour CategoryController
+app_category:
+    path: /admin/category
+    controller: App\Controller\CategoryController::index
+
+app_category_new:
+    path: /admin/category/new
+    controller: App\Controller\CategoryController::addCategory
+
+app_category_update:
+    path: /admin/category/{id}/update
+    controller: App\Controller\CategoryController::update
+
+app_category_delete:
+    path: /admin/category/{id}/delete
+    controller: App\Controller\CategoryController::delete
+
+# Routes pour UserController
+app_user:
+    path: /admin/user
+    controller: App\Controller\UserController::index
+
+app_user_to_editor:
+    path: /admin/user/{id}/to/editor
+    controller: App\Controller\UserController::changeRole
+
+app_user_remove_editor_role:
+    path: /admin/user/{id}/remove/editor/role
+    controller: App\Controller\UserController::editorRoleRemove
+
+app_user_remove:
+    path: /admin/user/{id}/remove
+    controller: App\Controller\UserController::userRemove

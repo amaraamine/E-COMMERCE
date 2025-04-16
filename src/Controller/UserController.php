@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Attribute\Route; // ← important en PHP 8+
+
 
 class UserController extends AbstractController
 {
