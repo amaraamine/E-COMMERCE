@@ -8,6 +8,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ProductType extends AbstractType
 {
@@ -17,12 +19,34 @@ class ProductType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('price')
-            ->add('subCategory') // Ce champ doit être défini uniquement si ton entité Product a bien une propriété "subCategory"
+            ->add('stock')
+            ->add('image', FileType::class, [
+                'label' => 'Image de produit',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/png',
+                            'image/jpeg',
+                        ],
+                        'mimeSizeMessage' => 'Votre image  de produit ne doit pas dépasser 1024ko.',
+                        'mimeTypesMessage' => 'Votre image de produit doit être au format JPG, PNG ou JPEG.',
+                    ]),
+                ],
+            ])
+            ->add('subCategory', EntityType::class, [
+                'class' => SubCategory::class,
+                'choice_label' => 'name',
+                'required' => false,
+            ])
             ->add('subCategories', EntityType::class, [
                 'class' => SubCategory::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                 // ou true si tu veux des checkboxes
+                'expanded' => true,
             ]);
     }
 

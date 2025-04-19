@@ -3,19 +3,20 @@
 {% block title %}Product index{% endblock %}
 
 {% block body %}
-   <div class="container"></div>
-    <h1>Product </h1><br><br>
-    {% include 'layouts/_flash_message.html.twig'%}
+<div class="container">
+    <h1>Product List</h1><br><br>
+    {% include 'layouts/_flash_message.html.twig' %}
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Stock</th>
                 <th>SubCategory</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,22 +24,32 @@
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
+                <td>{{ product.description|slice(0, 100) }}...</td>
                 <td>{{ product.price }}</td>
-                <td>{{ product.subCategory }}</td>
                 <td>
-                    <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                    {% if product.stock > 0 %}
+                        {{ product.stock }}
+                    {% else %}
+                        <span class="text-danger font-weight-bold">Out of Stock</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ product.subCategory ? product.subCategory.name : 'N/A' }}
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_product_show', {'id': product.id}) }}">Show</a>
+                    <a class="btn btn-outline-success btn-sm" href="{{ path('app_product_edit', {'id': product.id}) }}">Edit</a>
+                    <a class="btn btn-outline-info btn-sm" href="#">Add Stock</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="7" class="text-center">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_product_new') }}">Create new</a>
-    </div>
+    <a class="btn btn-success" href="{{ path('app_product_new') }}">Create New Product</a>
+</div>
 {% endblock %}

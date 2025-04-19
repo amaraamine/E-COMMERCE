@@ -1,10 +1,13 @@
 {{ form_start(form) }}
+
  <label for="">Nom produit </label>   
     {{ form_widget(form.name, {'attr': {'class': 'form form-control'}}) }}
-    
     {{ form_widget(form.description, {'attr': {'class': 'form form-control'}}) }}
     {{ form_widget(form.price, {'attr': {'class': 'form form-control'}}) }}
-    {{ form_widget(form.subCategories, {'attr': {'class': 'form form-control'}}) }}
+    {{ form_widget(form.stock, {'attr': {'class': 'form form-control'}}) }}
+    {{ form_widget(form.subCategories, {'attr': {'class': 'form '}}) }}
+    {{ form_widget(form.image, {'attr': {'class': 'form form-control'}}) }}
+
     <button class="btn btn-outline-primary btn-block">{{ button_label|default('Save') }}</button>
 
 {{ form_end(form) }}

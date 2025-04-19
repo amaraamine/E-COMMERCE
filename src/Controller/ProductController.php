@@ -22,6 +22,8 @@ class ProductController extends AbstractController
         ]);
     }
 
+
+
     #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -30,8 +32,38 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image-> $form->get('image')->getData();
+           
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+                // Move the file to the directory where images are stored
+                try {
+                    $image->move(
+                        $this->getParameter('image_dir'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $product->setImage('$newFilename');
+                    // Handle exception if something happens during file upload
+                }
+
+                // Update the product image property to store the image file name
+                $product->setImage($newFilename);
+            }
             $entityManager->persist($product);
             $entityManager->flush();
+
+            $stockHistory = new AddProductHistory();
+            $stockHistory->setQte($product->getStock());
+            $stockHistory->setProduct($product);
+            $stockHistory->setDate(new \DateTimeImmutable());
+            $entityManager->persist($stockHistory);
+            $entityManager->flush();
+            // Add a flash message to notify the user of success
+            
+            $this->addFlash(type:'success',message:'votre produit a été ajouté ');
 
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -75,9 +107,50 @@ class ProductController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager->remove($product);
-            $entityManager->flush(type:'danger',message:'votre pruidt a été modifié');
+            $entityManager->flush(type:'danger',message:'votre pruidt a été supprimer');
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
-}
+    
+    #[Route('/addStock/{id}', name: 'app_product_stock_add', methods: ['POST'])]
+    public function addStock($id , EntityManagerInterface $entityManager, Request $request , ProductRepository): Response
+    {
+        $addProductHistory = new AddProductHistory();
+        $form = $this->createForm(AddProductHistoryType::class, $addStock);
+        $form->handleRequest($request);
+        
+        $product = $productRepository->find($id);
+
+        if($form->isSubmitted() && $form->isValid()){
+            if($addStock->getQte() > 0){
+                $newQte = $product->getStock() + $addStock->getQte();
+                $product->setStock($newQte);
+
+                $entityManager->persist($product);
+                $entityManager->flush();
+            // Add a flash message to notify the user of success
+            
+                $this->addFlash(type:'success',message:'le stock de produit a été mis modifié ');
+                return $this->redirectToRoute('app_product_index');
+            }else{
+                $this->addFlash(type:'danger',message:'le stock ne doit pas être inférieur à 0 ');
+                return $this->redirectToRoute('app_product_index', ['id'=>$product->getID()],);
+            }
+
+
+
+
+
+            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('product/addStock.html.twig', 
+        ['form' => $form->createView(),
+        'product' => $product,
+        ]);
+      
+  
+  
+    }
