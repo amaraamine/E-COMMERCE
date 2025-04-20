@@ -4,7 +4,21 @@
 
 {% block body %}
 <div class="container">
-    <h1>Products</h1>
+    <div class="card mb-12" style="margin-top: 70px" >
+         <div class="row g-0">
+             <div class="col-md-4">
+               <img src="{{asset('uploads/images/'~product.image)}}" class="img-fluid rounded-start" alt="...">
+             </div>
+             <div class="col-md-8">
+             <h1 class="card-title text-success">{{product.name}}</h1></a>
+             <p class="card-text">{{product.description}} ..</p>
+             <h3>{{product.price}} EUR<h3>
+
+             <a href="" class="text-success"> Add to card </a>
+             </div>
+         </div>
+    </div> 
+    <h2>Latest Added Products </h2>
     <div class="row">
 
     {% for product in products %}
@@ -15,15 +29,13 @@
           <a style="text-decoration: none; color: green" href="{{path('app_home_product_show',{'id':product.id})}}"><h5 class="card-title">{{product.name}}</h5></a>
           <p class="card-text">{{product.description|slice(0,60)}} ..</p>
           <h3>{{product.price}} EUR<h3>
-          <a href="#" class="text-success"> Ajouter au panier</a>
+
+          <a href="#" class="text-success"> Add to Card</a>
         </div>
      </div>
     </div> 
       
       {% endfor %}
     </div>
-    <br><br><br>
-   {{knp_pagination_render(products,'layouts/pagination_tamplate.html.twig')}} 
 </div>
-
 {% endblock %}
